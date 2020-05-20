@@ -21,7 +21,7 @@ const UserPersonalInformation = attributes(
       required: true,
       equal: ['single', 'married'],
     },
-    risk_answers: {
+    riskAnswers: {
       type: Array,
       required: true,
       itemType: Boolean,
@@ -37,10 +37,14 @@ const UserPersonalInformation = attributes(
   },
   {
     dynamics: {
-      House: () => require('../house/House'),
-      Vehicle: () => require('../Vehicle/vehicle'),
+      House: () => require('./House'),
+      Vehicle: () => require('./Vehicle'),
     },
   },
-)(class UserPersonalInformation {});
+)(class UserPersonalInformation {
+  get initialRiskScore() {
+    return this.riskAnswers.reduce((acc, curr) => (curr ? acc + 1 : acc), 0);
+  }
+});
 
 module.exports = UserPersonalInformation;
