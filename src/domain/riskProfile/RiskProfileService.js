@@ -1,64 +1,48 @@
+const { curry, pipe } = require('ramda');
+
+const deductionRisk = curry((condition, value, initialRisk) =>
+  (condition ? (initialRisk - value) : initialRisk));
+
+const addRisk = curry((condition, value, initialRisk) =>
+  (condition ? (initialRisk + value) : initialRisk));
+
+
+const generateConditions = userInfo => ({
+  hasIncome: Boolean(userInfo.income),
+  isUnder60Years: userInfo.age <= 60,
+  isUnder30Years: userInfo.age <= 30,
+  isBetween30n40Years: userInfo.age <= 40 && userInfo.age >= 30,
+  hasIncomeOver200k: userInfo.income >= 200000,
+  houseIsMortgaged: userInfo.house?.ownershipStatus === 'mortgaged',
+  hasDependents: userInfo.dependents >= 0,
+  isMarried: userInfo.maritalStatus === 'married',
+  hasHome: Boolean(userInfo.house),
+});
+
+
 module.exports = (userInfo) => {
-  const hasIncome = Boolean(userInfo.income);
+  const {
+    isUnder30Years,
+    isBetween30n40Years,
+    hasIncomeOver200k,
+    houseIsMortgaged,
+    hasDependents,
+    isMarried,
+  } = generateConditions(userInfo);
 
-  const isUnder60Years = userInfo.age <= 60;
-
-  const isUnder30Years = userInfo.age <= 30;
-
-  const isBetween30n40Years = userInfo.age <= 40 && userInfo.age >= 30;
-
-  const hasIncomeOver200k = userInfo.income >= 200000;
-
-  const houseIsMortgaged = userInfo.house.ownershipStatus === 'mortgaged';
-
-  const hasDependents = userInfo.dependents >= 0;
-
-  const isMarried = userInfo.maritalStatus === 'married';
-
-  const deductUnder30Years = initialRisk =>
-    (isUnder30Years ? initialRisk - 2 : initialRisk);
-
-  const deductBetween30n40Years = initialRisk =>
-    (isBetween30n40Years ? initialRisk - 1 : initialRisk);
-  const deductionByAge = initialRisk => (isUnder30Years
-    ? deductUnder30Years(initialRisk)
-    : isBetween30n40Years
-      ? deductBetween30n40Years(initialRisk)
-      : initialRisk);
-
-  const deductIncomeOver200k = initialRisk =>
-    (hasIncomeOver200k ? initialRisk - 1 : initialRisk);
-
-  const addHouseIsMortgaged = initialRisk =>
-    (houseIsMortgaged ? initialRisk + 1 : initialRisk);
-
-  const addHasDependents = initialRisk =>
-    (hasDependents ? initialRisk + 1 : initialRisk);
-
-  const addIsMarried = initialRisk =>
-    (isMarried ? initialRisk + 1 : initialRisk);
-
-  const deductIsMarried = initialRisk =>
-    (isMarried ? initialRisk - 1 : initialRisk);
+  const deductUnder30Years = deductionRisk(isUnder30Years)(2);
+  const deductBetween30n40Years = deductionRisk(isBetween30n40Years)(1);
+  const deductionByAge = pipe(deductUnder30Years, deductBetween30n40Years);
 
   return {
-    values: {
-      hasIncome,
-      isUnder60Years,
-      isUnder30Years,
-      isBetween30n40Years,
-      hasIncomeOver200k,
-      houseIsMortgaged,
-      hasDependents,
-      isMarried,
-    },
+    values: generateConditions(userInfo),
     functions: {
       deductionByAge,
-      deductIncomeOver200k,
-      addHouseIsMortgaged,
-      addHasDependents,
-      addIsMarried,
-      deductIsMarried,
+      deductIncomeOver200k: deductionRisk(hasIncomeOver200k)(1),
+      addHouseIsMortgaged: addRisk(houseIsMortgaged)(1),
+      addHasDependents: addRisk(hasDependents)(1),
+      addIsMarried: addRisk(isMarried)(1),
+      deductIsMarried: deductionRisk(isMarried)(1),
     },
   };
 };
