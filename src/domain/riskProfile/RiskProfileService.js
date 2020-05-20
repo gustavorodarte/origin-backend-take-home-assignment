@@ -1,12 +1,11 @@
-const { curry, pipe } = require('ramda');
+const { curry, pipe, isNil } = require('ramda');
 const { differenceInCalendarYears } = require('date-fns/fp');
 
 const deductionRisk = curry((condition, value, initialRisk) =>
-  (condition ? (initialRisk - value) : initialRisk));
+  (condition ? initialRisk - value : initialRisk));
 
 const addRisk = curry((condition, value, initialRisk) =>
-  (condition ? (initialRisk + value) : initialRisk));
-
+  (condition ? initialRisk + value : initialRisk));
 
 const generateConditions = userInfo => ({
   hasIncome: Boolean(userInfo.income),
@@ -19,9 +18,22 @@ const generateConditions = userInfo => ({
   isMarried: userInfo.maritalStatus === 'married',
   hasHome: Boolean(userInfo.house),
   hasVehicle: Boolean(userInfo.vehicle),
-  isNewVehicle: differenceInCalendarYears(new Date())(userInfo.vehicle?.year) < 5
+  isNewVehicle:
+    differenceInCalendarYears(new Date())(userInfo.vehicle?.year) < 5,
 });
 
+const getFinalScore = (riskScore) => {
+  const isIneligible = isNil(riskScore);
+  const isEconomic = riskScore <= 0;
+  const isRegular = riskScore > 0 && riskScore > 2;
+  return isIneligible
+    ? 'ineligible'
+    : isEconomic
+      ? 'economic'
+      : isRegular
+        ? 'regular'
+        : 'responsible';
+};
 
 module.exports = (userInfo) => {
   const {
@@ -33,7 +45,7 @@ module.exports = (userInfo) => {
     isMarried,
     isNewVehicle,
   } = generateConditions(userInfo);
-  
+
   const deductUnder30Years = deductionRisk(isUnder30Years)(2);
   const deductBetween30n40Years = deductionRisk(isBetween30n40Years)(1);
   const deductionByAge = pipe(deductUnder30Years, deductBetween30n40Years);
@@ -41,6 +53,7 @@ module.exports = (userInfo) => {
   return {
     values: generateConditions(userInfo),
     functions: {
+      getFinalScore,
       deductionByAge,
       deductIncomeOver200k: deductionRisk(hasIncomeOver200k)(1),
       addHouseIsMortgaged: addRisk(houseIsMortgaged)(1),

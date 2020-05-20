@@ -1,6 +1,6 @@
 const { attributes } = require('structure');
 const RiskProfileService = require('../RiskProfileService');
-const { pipe } = require('ramda');
+const { pipe, isNil } = require('ramda');
 
 const AutoRiskProfile = attributes(
   {
@@ -34,8 +34,12 @@ const AutoRiskProfile = attributes(
   get riskScore() {
     const userInfo = this.userPersonalInformation;
     return !this.hasVehicle
-      ? 'ineligible'
+      ? null
       : this.calculateRiskScore(userInfo.initialRiskScore);
+  }
+
+  get finalScore() {
+    return this.getFinalScore(this.riskScore);
   }
 });
 

@@ -34,8 +34,12 @@ const HomeRiskProfile = attributes(
   get riskScore() {
     const userInfo = this.userPersonalInformation;
     return !this.hasHome
-      ? 'ineligible'
+      ? null
       : this.calculateRiskScore(userInfo.initialRiskScore);
+  }
+
+  get finalScore() {
+    return this.getFinalScore(this.riskScore);
   }
 });
 

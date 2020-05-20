@@ -35,8 +35,12 @@ const LifeRiskProfile = attributes(
   get riskScore() {
     const userInfo = this.userPersonalInformation;
     return !this.isUnder60Years
-      ? 'ineligible'
+      ? null
       : this.calculateRiskScore(userInfo.initialRiskScore);
+  }
+
+  get finalScore() {
+    return this.getFinalScore(this.riskScore);
   }
 });
 
