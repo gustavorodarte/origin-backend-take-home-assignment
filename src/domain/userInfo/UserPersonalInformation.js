@@ -24,6 +24,9 @@ const UserPersonalInformation = attributes(
     risk_answers: {
       type: Array,
       required: true,
+      itemType: Boolean,
+      sparse: false,
+      exactLength: 3,
     },
     house: {
       type: 'House',
