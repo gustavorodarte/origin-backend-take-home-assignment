@@ -1,5 +1,10 @@
 
 
+const {
+  createContainer, asClass, asFunction, asValue,
+} = require('awilix');
+const { scopePerRequest } = require('awilix-express');
+
 const Server = require('./interfaces/http/Server');
 const router = require('./interfaces/http/router');
 const loggerMiddleware = require('./interfaces/http/logging/loggerMiddleware');
@@ -8,9 +13,13 @@ const devErrorHandler = require('./interfaces/http/errors/devErrorHandler');
 const swaggerMiddleware = require('./interfaces/http/swagger/swaggerMiddleware');
 
 const { logger } = require('./infra/logging/logger');
-const { database } = require('./infra/database/models');
+const config = require('../config');
+const Application = require('./app/Application');
 
 const container = createContainer();
+
+const { database } = require('./infra/database/models');
+
 
 // System
 container
@@ -37,28 +46,10 @@ container
     swaggerMiddleware: asValue([swaggerMiddleware]),
   });
 
-// Repositories
-container.register({
-  usersRepository: asClass(SequelizeUsersRepository).singleton(),
-});
 
 // Database
 container.register({
-  database: asValue(database): asValue(UserModel),
-});
-
-// Operations
-container.register({
-  createUser: asClass(CreateUser),
-  getAllUsers: asClass(GetAllUsers),
-  getUser: asClass(GetUser),
-  updateUser: asClass(UpdateUser),
-  deleteUser: asClass(DeleteUser),
-});
-
-// Serializers
-container.register({
-  userSerializer: asValue(UserSerializer),
+  database: asValue(database),
 });
 
 module.exports = container;

@@ -16,7 +16,7 @@ const DisabilityRiskProfile = attributes(
     },
   },
 )(class DisabilityRiskProfile {
-  constructor() {
+  init() {
     const {
       values,
       functions,
@@ -26,8 +26,7 @@ const DisabilityRiskProfile = attributes(
   }
   calculateRiskScore(initialRisk) {
     return pipe(
-      this.deductUnder30Years,
-      this.deductBetween30n40Years,
+      this.deductionByAge,
       this.deductIncomeOver200k,
       this.addHouseIsMortgaged,
       this.addHasDependents,
@@ -36,7 +35,7 @@ const DisabilityRiskProfile = attributes(
   }
   get riskScore() {
     const userInfo = this.userPersonalInformation;
-    return !this.hasIncome(userInfo) || this.isUnder60Years(userInfo)
+    return !this.hasIncome || !this.isUnder60Years
       ? 'ineligible'
       : this.calculateRiskScore(userInfo.initialRiskScore);
   }

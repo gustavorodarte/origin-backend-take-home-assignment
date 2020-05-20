@@ -4,6 +4,7 @@ module.exports = (userInfo) => {
   const isUnder60Years = userInfo.age <= 60;
 
   const isUnder30Years = userInfo.age <= 30;
+
   const isBetween30n40Years = userInfo.age <= 40 && userInfo.age >= 30;
 
   const hasIncomeOver200k = userInfo.income >= 200000;
@@ -15,10 +16,15 @@ module.exports = (userInfo) => {
   const isMarried = userInfo.maritalStatus === 'married';
 
   const deductUnder30Years = initialRisk =>
-    (isUnder30Years ? initialRisk : initialRisk - 2);
+    (isUnder30Years ? initialRisk - 2 : initialRisk);
 
   const deductBetween30n40Years = initialRisk =>
-    (isBetween30n40Years ? initialRisk : initialRisk - 1);
+    (isBetween30n40Years ? initialRisk - 1 : initialRisk);
+  const deductionByAge = initialRisk => (isUnder30Years
+    ? deductUnder30Years(initialRisk)
+    : isBetween30n40Years
+      ? deductBetween30n40Years(initialRisk)
+      : initialRisk);
 
   const deductIncomeOver200k = initialRisk =>
     (hasIncomeOver200k ? initialRisk - 1 : initialRisk);
@@ -47,8 +53,7 @@ module.exports = (userInfo) => {
       isMarried,
     },
     functions: {
-      deductUnder30Years,
-      deductBetween30n40Years,
+      deductionByAge,
       deductIncomeOver200k,
       addHouseIsMortgaged,
       addHasDependents,

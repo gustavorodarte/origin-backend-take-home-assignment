@@ -74,7 +74,7 @@ services:
 
   specs:
     <<: *base
-    command: /bin/ash -c "npm test"
+    command: /bin/bash -c "npm test"
     environment:
       <<: *env
       NODE_ENV: test
@@ -84,4 +84,4 @@ services:
 
   lint:
     <<: *base
-    command: /bin/ash -c "npm run lint"
+    command: /bin/bash -c "npm run lint"
