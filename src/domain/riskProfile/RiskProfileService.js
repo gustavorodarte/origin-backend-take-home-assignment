@@ -1,4 +1,5 @@
 const { curry, pipe } = require('ramda');
+const { differenceInCalendarYears } = require('date-fns/fp');
 
 const deductionRisk = curry((condition, value, initialRisk) =>
   (condition ? (initialRisk - value) : initialRisk));
@@ -17,6 +18,8 @@ const generateConditions = userInfo => ({
   hasDependents: userInfo.dependents >= 0,
   isMarried: userInfo.maritalStatus === 'married',
   hasHome: Boolean(userInfo.house),
+  hasVehicle: Boolean(userInfo.vehicle),
+  isNewVehicle: differenceInCalendarYears(new Date())(userInfo.vehicle?.year) < 5
 });
 
 
@@ -28,8 +31,9 @@ module.exports = (userInfo) => {
     houseIsMortgaged,
     hasDependents,
     isMarried,
+    isNewVehicle,
   } = generateConditions(userInfo);
-
+  
   const deductUnder30Years = deductionRisk(isUnder30Years)(2);
   const deductBetween30n40Years = deductionRisk(isBetween30n40Years)(1);
   const deductionByAge = pipe(deductUnder30Years, deductBetween30n40Years);
@@ -43,6 +47,7 @@ module.exports = (userInfo) => {
       addHasDependents: addRisk(hasDependents)(1),
       addIsMarried: addRisk(isMarried)(1),
       deductIsMarried: deductionRisk(isMarried)(1),
+      addIsNewVehicle: addRisk(isNewVehicle)(1),
     },
   };
 };
