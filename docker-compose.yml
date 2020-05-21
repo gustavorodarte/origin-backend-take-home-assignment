@@ -29,25 +29,6 @@ services:
     environment:
       SWAGGER_JSON: /home/node/app/swagger.json
 
-  db:
-    hostname: db
-    image: postgres
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: 'dev@1234'
-
-  pgadmin4:
-    hostname: pgadmin4
-    image: dpage/pgadmin4
-    ports:
-     - 6003:80
-    environment:
-      PGADMIN_DEFAULT_EMAIL: 'dev@dev.com.br'
-      PGADMIN_DEFAULT_PASSWORD: 'dev@1234'
-    depends_on:
-      - db
-
   app: &app
     <<: *base
     hostname: app
@@ -55,10 +36,6 @@ services:
     environment: &env
       NODE_ENV: development
       NODE_PATH: '.'
-      DB_HOST: 'db'
-      DB_DATABASE: user
-      DB_USER: 'postgres'
-      DB_PASSWORD: 'dev@1234'
     ports:
       - '3003:80'
     depends_on:

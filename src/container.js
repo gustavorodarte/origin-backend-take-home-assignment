@@ -24,8 +24,6 @@ const RiskProfileSerializer = require('./interfaces/http/riskProfile/RiskProfile
 
 const container = createContainer();
 
-const { database } = require('./infra/database/models');
-
 
 // System
 container
@@ -51,13 +49,6 @@ container
     errorHandler: asValue(config.production ? errorHandler : devErrorHandler),
     swaggerMiddleware: asValue([swaggerMiddleware]),
   });
-
-
-// Database
-container.register({
-  database: asValue(database),
-});
-
 
 // Operations
 container.register({
