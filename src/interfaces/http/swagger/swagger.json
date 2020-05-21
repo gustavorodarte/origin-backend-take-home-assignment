@@ -1,3 +1,4 @@
+ 
 {
   "openapi": "3.0.0",
   "info": {
@@ -9,5 +10,150 @@
       "description": "Local server",
       "url": "/api"
     }
-  ]
+  ],
+  "paths": {
+    "/risk-profile": {
+      "post": {
+        "operationId": "calculateRisk",
+        "tags": [ "Profile Risk" ],
+        "requestBody": {
+          "description": "User Personal Information.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonalInformation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Profile Risk calculated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProfileRisk"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Profile Risk not calculated  because of validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PersonalInformation": {
+        "required": [
+          "age",
+          "dependents",
+          "income",
+          "marital_status",
+          "risk_questions"
+        ],
+        "properties": {
+          "age": {
+            "type": "integer"
+          },
+          "dependents": {
+            "type": "integer"
+          },
+          "income": {
+            "type": "integer"
+          },
+          "marital_status": {
+            "type": "string",
+            "enum": ["single", "married"]
+          },
+          "risk_questions": {
+            "type": "array",
+            "items": {
+              "type": "boolean"
+            },
+            "minItems": 3,
+            "maxItems": 3
+          },
+          "house": {
+            "$ref": "#/components/schemas/House"
+          },
+          "vehicle": {
+            "$ref": "#/components/schemas/Vehicle"
+          }
+        }
+      },
+      "House": {
+        "required": ["ownership_status"],
+        "properties": {
+          "ownership_status": {
+            "type": "string",
+            "enum": [ "owned", "mortgaged"]
+          }
+        }
+      },
+      "Vehicle": {
+        "required": ["year"],
+        "properties": {
+          "year": {
+            "type": "integer"
+          }
+        }
+      },
+      "ProfileRisk": {
+        "required": ["auto", "home", "life", "disability"],
+        "properties": {
+          "auto": {
+            "type": "string",
+          "enum": ["economic", "regular", "responsible"]
+          },
+          "home": {
+            "type": "string",
+            "enum": ["economic", "regular", "responsible"]
+          },
+          "life": {
+            "type": "string",
+            "enum": ["economic", "regular", "responsible"]
+          },
+          "disability": {
+            "type": "string",
+            "enum": ["economic", "regular", "responsible"]
+          }
+        }
+      },
+      "ValidationError": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [ "ValidationError" ]
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ValidationErrorDetail"
+            }
+          }
+        }
+      },
+      "ValidationErrorDetail": {
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
 }

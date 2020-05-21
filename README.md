@@ -27,16 +27,20 @@ Auxiliary libraries were omitted but can be found in the [package.json](https://
 
 * Install the dependencies with: `docker-compose run --rm app bash -c "npm i"`
 * Start a container with: `docker-compose up -d app`
-* The app will be running on http://0.0.0.0:3003
+* The app will be running on `http://0.0.0.0:3003`
 
 ## Using the APP
 
-* Just make a POST request to http://0.0.0.0:3003/api/risk-profile
+* Just make a POST request to `http://0.0.0.0:3003/api/risk-profile`
+
+## API Docs
+
+* Swagger api docs `http://0.0.0.0:3003/api/docs`
+
 
 ## Testing
 
 * Running test suite with: `docker-compose run --rm specs`
-
 
 ## Linting
 
