@@ -25,7 +25,7 @@ Auxiliary libraries were omitted but can be found in the [package.json](https://
 
 ## Running
 
-* Install the dependencies with: docker-compose run --rm app bash -c "npm i"
+* Install the dependencies with: `docker-compose run --rm app bash -c "npm i"`
 * Start a container with: `docker-compose up -d app`
 * The app will be running on http://0.0.0.0:3003
 
