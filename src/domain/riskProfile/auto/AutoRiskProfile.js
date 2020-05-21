@@ -1,6 +1,6 @@
 const { attributes } = require('structure');
 const RiskProfileService = require('../RiskProfileService');
-const { pipe, isNil } = require('ramda');
+const { pipe } = require('ramda');
 
 const AutoRiskProfile = attributes(
   {
@@ -13,6 +13,10 @@ const AutoRiskProfile = attributes(
     dynamics: {
       UserPersonalInformation: () =>
         require('../../userInfo/UserPersonalInformation'),
+      House: () =>
+        require('../../userInfo/House'),
+      Vehicle: () =>
+        require('../../userInfo/Vehicle'),
     },
   },
 )(class AutoRiskProfile {

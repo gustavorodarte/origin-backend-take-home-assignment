@@ -17,7 +17,7 @@ describe('Domain :: DisabilityRiskProfile', () => {
             },
           });
           disabilityRiskProfile.init();
-          expect(disabilityRiskProfile.riskScore).toBe('ineligible');
+          expect(disabilityRiskProfile.riskScore).toBe(null);
         });
       });
       describe('when has age over 60 years ', () => {
@@ -34,7 +34,7 @@ describe('Domain :: DisabilityRiskProfile', () => {
             },
           });
           disabilityRiskProfile.init();
-          expect(disabilityRiskProfile.riskScore).toBe('ineligible');
+          expect(disabilityRiskProfile.riskScore).toBe(null);
         });
       });
     });

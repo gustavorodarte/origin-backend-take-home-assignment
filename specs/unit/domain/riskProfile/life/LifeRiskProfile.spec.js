@@ -17,7 +17,7 @@ describe('Domain :: LifeRiskProfile', () => {
             },
           });
           lifeRiskProfile.init();
-          expect(lifeRiskProfile.riskScore).toBe('ineligible');
+          expect(lifeRiskProfile.riskScore).toBe(null);
         });
       });
     });

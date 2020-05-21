@@ -15,7 +15,7 @@ describe('Domain :: AutoRiskProfile', () => {
             },
           });
           autoRiskProfile.init();
-          expect(autoRiskProfile.riskScore).toBe('ineligible');
+          expect(autoRiskProfile.riskScore).toBe(null);
         });
       });
     });

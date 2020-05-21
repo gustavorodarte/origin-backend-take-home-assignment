@@ -16,7 +16,7 @@ describe('Domain :: HomeRiskProfile', () => {
             },
           });
           homeRiskProfile.init();
-          expect(homeRiskProfile.riskScore).toBe('ineligible');
+          expect(homeRiskProfile.riskScore).toBe(null);
         });
       });
     });

@@ -25,7 +25,7 @@ const generateConditions = userInfo => ({
 const getFinalScore = (riskScore) => {
   const isIneligible = isNil(riskScore);
   const isEconomic = riskScore <= 0;
-  const isRegular = riskScore > 0 && riskScore > 2;
+  const isRegular = riskScore > 0 && riskScore <= 2;
   return isIneligible
     ? 'ineligible'
     : isEconomic
