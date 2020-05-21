@@ -3,6 +3,8 @@ FROM node:latest
 # Maintainer Information
 LABEL author="Gustavo Rodarte"
 LABEL license="GPLv3"
+WORKDIR /home/node/app
+
 
 # Copy project production folders
 COPY ./config ./config

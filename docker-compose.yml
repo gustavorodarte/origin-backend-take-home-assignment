@@ -1,11 +1,5 @@
 version: '3'
 
-volumes:
-  db-data:
-    driver: local
-  dynamodb-data:
-    driver: local
-
 services:
   base: &base
     hostname: base
@@ -35,11 +29,10 @@ services:
     command: npm run dev
     environment: &env
       NODE_ENV: development
+      EXPRESS_PORT: '3003'
       NODE_PATH: '.'
     ports:
-      - '3003:80'
-    depends_on:
-      - db
+      - '3003:3003'
 
   debug:
     <<: *app
@@ -56,8 +49,6 @@ services:
       <<: *env
       NODE_ENV: test
       BASE_URL: 'https://dummy.com.br/v1'
-    depends_on:
-      - db
 
   lint:
     <<: *base

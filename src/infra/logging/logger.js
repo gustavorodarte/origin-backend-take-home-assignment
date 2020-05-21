@@ -4,8 +4,6 @@ const {
   transports,
 } = require('winston');
 
-require('winston-rocketchat-transport');
-
 const {
   combine,
   timestamp,
@@ -31,11 +29,6 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging')
     format: formatter,
     transports: [
       new transports.Console(),
-      new transports.RocketChat({
-        level: 'warn',
-        webhook_url: process.env.ROCKET_CHAT_WEBHOOK_URL,
-        custom_formatter: (level, message) => ({ text: `*WL_MS[transaction]*\n*${level.toUpperCase()}*: ${message}` }),
-      }),
     ],
   });
 } else {

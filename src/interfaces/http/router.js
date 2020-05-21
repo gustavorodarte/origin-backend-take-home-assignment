@@ -11,12 +11,9 @@ module.exports = ({
 }) => {
   const router = Router();
 
-  /* istanbul ignore if */
   if (config.env === 'development') {
     router.use(statusMonitor());
   }
-
-  /* istanbul ignore if */
   if (config.env !== 'test') {
     router.use(loggerMiddleware);
   }
