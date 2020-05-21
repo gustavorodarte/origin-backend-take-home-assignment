@@ -31,13 +31,13 @@ Auxiliary libraries were omitted but can be found in the [package.json](https://
 
 ## Using the APP
 
-* Just make a POST request to http://0.0.0.0:8000/api/risk-profile
+* Just make a POST request to http://0.0.0.0:3003/api/risk-profile
 
 ## Testing
 
 * Running test suite with: `docker-compose run --rm specs`
 
 
-## Linting and static check
+## Linting
 
 * Running lint with: `docker-compose run --rm lint`
