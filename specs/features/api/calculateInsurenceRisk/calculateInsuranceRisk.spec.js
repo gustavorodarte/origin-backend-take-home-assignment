@@ -1,10 +1,10 @@
 const request = require('specs/support/request');
 
-describe('API :: POST :: /api/insurances/risk-profile', () => {
+describe('API :: POST :: /api/risk-profile', () => {
   describe('When pass the correct payload', () => {
     test('return success with correct risk calculation', async () => {
       const { body } = await request()
-        .post('/api/insurances/calculate-risk')
+        .post('/api/risk-profile')
         .send({
           age: 35,
           dependents: 2,

@@ -1,4 +1,5 @@
 const CalculateRisk = require('src/app/riskProfile/CalculateRisk');
+
 describe('App :: RiskProfile :: CalculateRisk', () => {
   describe('when input is valid', () => {
     test('calculates the risk and emits SUCCESS', (done) => {

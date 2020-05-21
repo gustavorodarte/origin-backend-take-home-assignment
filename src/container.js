@@ -1,5 +1,3 @@
-
-
 const {
   createContainer, asClass, asFunction, asValue,
 } = require('awilix');
@@ -15,6 +13,14 @@ const swaggerMiddleware = require('./interfaces/http/swagger/swaggerMiddleware')
 const { logger } = require('./infra/logging/logger');
 const config = require('../config');
 const Application = require('./app/Application');
+
+const {
+  CalculateRisk,
+} = require('./app/riskProfile');
+
+
+const RiskProfileSerializer = require('./interfaces/http/riskProfile/RiskProfileSerializer');
+
 
 const container = createContainer();
 
@@ -50,6 +56,17 @@ container
 // Database
 container.register({
   database: asValue(database),
+});
+
+
+// Operations
+container.register({
+  calculateRisk: asClass(CalculateRisk),
+});
+
+// Serializers
+container.register({
+  riskProfileSerializer: asValue(RiskProfileSerializer),
 });
 
 module.exports = container;
