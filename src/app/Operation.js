@@ -7,6 +7,10 @@ const createOutputs = outputsArray => outputsArray.reduce((obj, output) => {
 }, Object.create(null));
 
 class Operation extends EventEmitter {
+  // eslint-disable-next-line no-useless-constructor
+  constructor() {
+    super();
+  }
   static setOutputs(outputs) {
     define(this.prototype, 'outputs', {
       value: createOutputs(outputs),

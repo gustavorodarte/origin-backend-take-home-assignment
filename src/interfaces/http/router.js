@@ -42,6 +42,8 @@ module.exports = ({
 
   apiRouter.use('/status', (_, res) => res.json({ message: 'Hello! I am here.' }));
 
+  apiRouter.use('/risk-profile', controller('riskProfile/RiskProfileController'));
+
   router.use('/api', apiRouter);
 
   router.use(errorHandler);
