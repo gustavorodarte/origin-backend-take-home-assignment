@@ -14,12 +14,12 @@ const generateConditions = userInfo => ({
   isBetween30n40Years: userInfo.age <= 40 && userInfo.age >= 30,
   hasIncomeOver200k: userInfo.income >= 200000,
   houseIsMortgaged: userInfo.house?.ownershipStatus === 'mortgaged',
-  hasDependents: userInfo.dependents >= 0,
+  hasDependents: userInfo.dependents > 0,
   isMarried: userInfo.maritalStatus === 'married',
   hasHome: Boolean(userInfo.house),
   hasVehicle: Boolean(userInfo.vehicle),
   isNewVehicle:
-    differenceInCalendarYears(new Date())(userInfo.vehicle?.year) < 5,
+    differenceInCalendarYears(new Date(userInfo.vehicle?.year, 1, 1))(new Date()) <= 5,
 });
 
 const getFinalScore = (riskScore) => {
